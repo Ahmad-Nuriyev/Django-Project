@@ -1,0 +1,13 @@
+import os
+from celery import Celery
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "management.settings") 
+app = Celery("django_celery")
+app.config_from_object("django.conf:settings", namespace="CELERY")
+app.autodiscover_tasks()
+
+
+# py -m celery -A management worker -l info --pool=threads 
+
+# celery -A management beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
